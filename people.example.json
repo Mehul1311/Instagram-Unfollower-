@@ -1,0 +1,10 @@
+{
+  "usernames": [
+    "example_one",
+    "@example.two",
+    "https://www.instagram.com/example_three/",
+    {
+      "username": "example_four"
+    }
+  ]
+}

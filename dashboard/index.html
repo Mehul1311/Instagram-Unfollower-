@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Clean Slate — Instagram cleanup</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="Clean Slate home">
+          <span class="brand-mark">CS</span>
+          <span>Clean Slate</span>
+        </a>
+        <div class="connection"><span class="status-dot"></span> Local only · credentials stay here</div>
+      </header>
+
+      <section class="hero" id="top">
+        <div class="hero-copy">
+          <p class="eyebrow">Instagram cleanup control room</p>
+          <h1>Clear the noise.<br /><em>Keep the control.</em></h1>
+          <p class="lede">
+            Your <span id="hero-total">623</span>-account cleanup, made visible. Run one careful batch or queue every
+            remaining target with cooldowns and automatic stops on Instagram warnings.
+          </p>
+          <div class="hero-actions">
+            <button class="button primary" id="run-all">Finish all remaining</button>
+            <button class="button secondary" id="run-batch">Run next batch</button>
+          </div>
+        </div>
+
+        <div class="progress-card panel">
+          <div class="ring" id="progress-ring" style="--progress: 0deg">
+            <div class="ring-core">
+              <strong id="progress-percent">0%</strong>
+              <span>complete</span>
+            </div>
+          </div>
+          <div class="progress-copy">
+            <span class="label">Queue status</span>
+            <strong id="phase">Ready</strong>
+            <span id="remaining-summary">Loading targets…</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="metrics" aria-label="Cleanup totals">
+        <article><span>Total targets</span><strong id="metric-total">—</strong></article>
+        <article><span>Unfollowed</span><strong id="metric-unfollowed">—</strong></article>
+        <article><span>Already clear</span><strong id="metric-skipped">—</strong></article>
+        <article><span>Remaining</span><strong id="metric-remaining">—</strong></article>
+        <article><span>Needs attention</span><strong id="metric-errors">—</strong></article>
+      </section>
+
+      <section class="workspace-grid">
+        <article class="panel controls-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Run settings</p>
+              <h2>Set the pace</h2>
+            </div>
+            <span class="file-chip" id="target-file">people.json</span>
+          </div>
+
+          <div class="control-grid">
+            <label>
+              <span>Accounts per batch</span>
+              <input id="batch-size" type="number" value="10" min="1" max="25" />
+            </label>
+            <label>
+              <span>Minimum delay</span>
+              <div class="input-unit"><input id="delay-min" type="number" value="30" min="10" max="600" /><b>sec</b></div>
+            </label>
+            <label>
+              <span>Maximum delay</span>
+              <div class="input-unit"><input id="delay-max" type="number" value="60" min="10" max="600" /><b>sec</b></div>
+            </label>
+            <label>
+              <span>Between-batch cooldown</span>
+              <div class="input-unit"><input id="cooldown" type="number" value="30" min="5" max="720" /><b>min</b></div>
+            </label>
+          </div>
+
+          <div class="run-strip">
+            <div>
+              <span class="label">Active run</span>
+              <strong id="run-detail">No run active</strong>
+            </div>
+            <div class="run-actions">
+              <button class="button ghost" id="pause-run" disabled>Pause after batch</button>
+              <button class="button danger" id="stop-run" disabled>Stop now</button>
+            </div>
+          </div>
+
+          <div class="safety-note">
+            <span>Safety behavior</span>
+            The queue stops on rate limits, verification prompts, Instagram errors, or a batch
+            that makes no progress. Every completed action is saved immediately.
+          </div>
+
+          <form class="upload-row" id="upload-form">
+            <div>
+              <strong>Replace target list</strong>
+              <span>Simple lists and Instagram export JSON are supported.</span>
+            </div>
+            <label class="button secondary file-button">
+              Choose JSON
+              <input id="target-upload" type="file" accept="application/json,.json,.txt" />
+            </label>
+          </form>
+        </article>
+
+        <article class="panel activity-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Live activity</p>
+              <h2>What’s happening</h2>
+            </div>
+            <span class="live-badge" id="live-badge">Idle</span>
+          </div>
+          <pre class="console" id="console" aria-live="polite">Waiting for a run…</pre>
+        </article>
+      </section>
+
+      <section class="panel accounts-panel">
+        <div class="section-heading accounts-heading">
+          <div>
+            <p class="eyebrow">Target ledger</p>
+            <h2>Every account, one status</h2>
+          </div>
+          <div class="table-tools">
+            <input id="account-search" type="search" placeholder="Search @username" />
+            <select id="status-filter" aria-label="Filter by status">
+              <option value="all">All statuses</option>
+              <option value="pending">Pending</option>
+              <option value="success">Unfollowed</option>
+              <option value="not_following">Already clear</option>
+              <option value="attention">Needs attention</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Account</th><th>Status</th><th>Last update</th></tr></thead>
+            <tbody id="accounts-body"></tbody>
+          </table>
+        </div>
+        <div class="table-footer" id="table-footer">Loading accounts…</div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status"></div>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>
