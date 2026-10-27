@@ -26,7 +26,7 @@ AccUnfollower does **not** discover non-followers or decide whom you should unfo
 ## Installation
 
 ```powershell
-git clone <your-repository-url>
+git clone https://github.com/Mehul1311/Instagram-Unfollower-.git
 cd AccUnfollower
 python -m venv .venv
 .venv\Scripts\Activate.ps1
